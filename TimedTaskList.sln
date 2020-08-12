@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30320.27
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TimedTaskList", "TimedTaskList\TimedTaskList.csproj", "{648541F4-2BF5-4104-ADA8-1087BBFC2B72}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{648541F4-2BF5-4104-ADA8-1087BBFC2B72}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{648541F4-2BF5-4104-ADA8-1087BBFC2B72}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{648541F4-2BF5-4104-ADA8-1087BBFC2B72}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{648541F4-2BF5-4104-ADA8-1087BBFC2B72}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C0A7F467-366B-4A47-8268-CAD66BF45F1E}
+	EndGlobalSection
+EndGlobal
