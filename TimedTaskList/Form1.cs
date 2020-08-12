@@ -19,6 +19,9 @@ namespace TimedTaskList
         TimeSpan currentTime;
         List<TimedTask> TTlist;
         int fontSize;
+        string timeFormattingEstimated;
+        string timeFormattingActual;
+        string timeFormattingStatus;
 
         public Form1()
         {
@@ -29,7 +32,9 @@ namespace TimedTaskList
             currentTime = new TimeSpan(0, 0, 0);
             TTlist = new List<TimedTask>();
             fontSize = 16;
-
+            timeFormattingEstimated = "{0:##}"; //"{0:#0}:{1:00}";
+            timeFormattingActual = "{0:#0}:{1:00}";
+            timeFormattingStatus = "{0:#0}:{1:00}";
 
 
             lvTasks.Columns.Add("Description", 295);
@@ -45,6 +50,11 @@ namespace TimedTaskList
 
         private void StartTimer_ButtonClicked(object sender, EventArgs e)
         {
+            if(TTlist.Count==0)
+            {
+                MessageBox.Show("Add a task before you start the timer");
+                return;
+            }
             timer1.Start();
         }
 
@@ -67,14 +77,26 @@ namespace TimedTaskList
             currentTime = currentTime.Add(theSecond);
             if (lvTasks.Items.Count > 0 && lvTasks.Items[i].Checked != true)
             {
-                lvTasks.Items[i].SubItems[2].Text = String.Format("{0:#0}:{1:00}", currentTime.Minutes, currentTime.Seconds);
+                lvTasks.Items[i].SubItems[2].Text = String.Format(timeFormattingActual, currentTime.Minutes, currentTime.Seconds);
                 TTlist[i].actualTime = currentTime;
             }
-            statusStrip1.Items[0].Text = "Time remaing for current task: " + String.Format("{0:#0}:{1:00}",
+
+
+            statusStrip1.Items[0].Text = "Total Estimated Time: "+ CalculateTotalEstimatedTime() + " || Time remaing for current task: " + String.Format(timeFormattingStatus,
                     TTlist[i].estimatedTime.Subtract(currentTime).Minutes,
                     TTlist[i].estimatedTime.Subtract(currentTime).Seconds);
         }
 
+        public string CalculateTotalEstimatedTime()
+        {
+            TimeSpan totalTime = new TimeSpan(0,0,0);
+            foreach (TimedTask tt in TTlist)
+            {
+                totalTime =totalTime.Add(tt.estimatedTime);
+            }
+
+            return String.Format(timeFormattingStatus, totalTime.Hours, totalTime.Minutes); ;
+        }
         private void DeleteTask_ButtonClicked(object sender, EventArgs e)
         {
             if (lvTasks.SelectedIndices != null)
@@ -84,6 +106,7 @@ namespace TimedTaskList
                     TTlist.RemoveAt(x);
                     lvTasks.Items.RemoveAt(x);
                 }
+                statusStrip1.Items[0].Text = "Total Estimated Time: " + CalculateTotalEstimatedTime();
             }
         }
 
@@ -100,11 +123,12 @@ namespace TimedTaskList
                     TTlist[i].estimatedTime = editTD.taskUpdate.estimatedTime;
                     lvTasks.Items[i] = new ListViewItem(new string[]
                             { TTlist[i].description,
-                                String.Format("{0:#0}:{1:00}", TTlist[i].estimatedTime.Minutes, TTlist[i].estimatedTime.Seconds),
-                                String.Format("{0:#0}:{1:00}", TTlist[i].actualTime.Minutes, TTlist[i].actualTime.Seconds)});
+                                String.Format(timeFormattingEstimated, TTlist[i].estimatedTime.Minutes, TTlist[i].estimatedTime.Seconds),
+                                String.Format(timeFormattingActual, TTlist[i].actualTime.Minutes, TTlist[i].actualTime.Seconds)});
                     lvTasks.Items[i].Checked = TTlist[i].isChecked;
                 }
                 HandleListVewStrikout();
+                statusStrip1.Items[0].Text = "Total Estimated Time: " + CalculateTotalEstimatedTime();
             }
         }
 
@@ -131,11 +155,12 @@ namespace TimedTaskList
                 {
                     lvTasks.Items.Add(new ListViewItem(
                         new string[] { TTlist[i].description,
-                            String.Format("{0:#0}:{1:00}", TTlist[i].estimatedTime.Minutes,TTlist[i].estimatedTime.Seconds),
-                            String.Format("{0:#0}:{1:00}",TTlist[i].actualTime.Minutes,TTlist[i].actualTime.Seconds)}));
+                            String.Format(timeFormattingEstimated, TTlist[i].estimatedTime.Minutes,TTlist[i].estimatedTime.Seconds),
+                            String.Format(timeFormattingActual,TTlist[i].actualTime.Minutes,TTlist[i].actualTime.Seconds)}));
                     lvTasks.Items[i].Checked = TTlist[i].isChecked;
                 }
                 HandleListVewStrikout();
+                statusStrip1.Items[0].Text = "Total Estimated Time: " + CalculateTotalEstimatedTime();
             }
         }
 
@@ -215,16 +240,19 @@ namespace TimedTaskList
                 TTlist.Add(temp);
                 lvTasks.Items.Add(new ListViewItem(new string[]
                     { temp.description,
-                        String.Format("{0:#0}:{1:00}",temp.estimatedTime.Minutes,temp.estimatedTime.Seconds),
-                        String.Format("{0:#0}:{1:00}",temp.actualTime.Minutes,temp.actualTime.Seconds) }));
+                        String.Format(timeFormattingEstimated,temp.estimatedTime.Minutes,temp.estimatedTime.Seconds),
+                        String.Format(timeFormattingActual,temp.actualTime.Minutes,temp.actualTime.Seconds) }));
 
                 tbDescription.Text = "";
+                HandleListVewStrikout();
+                statusStrip1.Items[0].Text = "Total Estimated Time: " + CalculateTotalEstimatedTime();
             }
             else
             {
                 tbEstimatedTime.Text = "";
                 tbEstimatedTime.Select();
             }
+
         }
 
         private void lvTasks_ItemChecked(object sender, ItemCheckedEventArgs e)
@@ -238,7 +266,7 @@ namespace TimedTaskList
                 e.Item.UseItemStyleForSubItems = false;
                 TTlist[i].actualTime = currentTime;
                 TTlist[i].isChecked = true;
-                lvTasks.Items[i].SubItems[2].Text = String.Format("{0:#0}:{1:00}", TTlist[i].actualTime.Minutes, TTlist[i].actualTime.Seconds);
+                lvTasks.Items[i].SubItems[2].Text = String.Format(timeFormattingActual, TTlist[i].actualTime.Minutes, TTlist[i].actualTime.Seconds);
                 currentTime = new TimeSpan(0, 0, 0);
             }
             else
@@ -246,11 +274,11 @@ namespace TimedTaskList
                 e.Item.UseItemStyleForSubItems = false;
                 TTlist[i].actualTime=TTlist[i].actualTime.Add(currentTime);
                 TTlist[i].isChecked = false;
-                lvTasks.Items[i].SubItems[2].Text = String.Format("{0:#0}:{1:00}", TTlist[i].actualTime.Minutes, TTlist[i].actualTime.Seconds);
+                lvTasks.Items[i].SubItems[2].Text = String.Format(timeFormattingActual, TTlist[i].actualTime.Minutes, TTlist[i].actualTime.Seconds);
                 if(i<lvTasks.Items.Count-1)
                 {
-                    lvTasks.Items[i + 1].SubItems[2].Text = "0:00";
                     TTlist[i + 1].actualTime = new TimeSpan(0, 0, 0);
+                    lvTasks.Items[i + 1].SubItems[2].Text = String.Format(timeFormattingActual, TTlist[i+1].actualTime.Minutes, TTlist[i+1].actualTime.Seconds);
                 }
                 currentTime = TTlist[i].actualTime;
             }
@@ -266,8 +294,8 @@ namespace TimedTaskList
                 currentTime = new TimeSpan(0, 0, 0);
                 lvTasks.Items[i] = new ListViewItem(new string[]
                     { TTlist[i].description,
-                          String.Format("{0:#0}:{1:00}", TTlist[i].estimatedTime.Minutes, TTlist[i].estimatedTime.Seconds),
-                          String.Format("{0:#0}:{1:00}", TTlist[i].actualTime.Minutes, TTlist[i].actualTime.Seconds)});
+                          String.Format(timeFormattingEstimated, TTlist[i].estimatedTime.Minutes, TTlist[i].estimatedTime.Seconds),
+                          String.Format(timeFormattingActual, TTlist[i].actualTime.Minutes, TTlist[i].actualTime.Seconds)});
                 lvTasks.Items[i].Checked = TTlist[i].isChecked;
                 HandleListVewStrikout();
             }
