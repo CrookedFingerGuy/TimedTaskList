@@ -33,7 +33,6 @@
             this.tbDescription = new System.Windows.Forms.TextBox();
             this.tbEstimatedTime = new System.Windows.Forms.TextBox();
             this.bAddTask = new System.Windows.Forms.Button();
-            this.lvTasks = new System.Windows.Forms.ListView();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
@@ -54,6 +53,7 @@
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripMenuItem();
+            this.lvTasks = new System.Windows.Forms.ListView();
             this.toolStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.contextMenuStrip1.SuspendLayout();
@@ -83,23 +83,6 @@
             this.bAddTask.Text = "Add Task";
             this.bAddTask.UseVisualStyleBackColor = true;
             this.bAddTask.Click += new System.EventHandler(this.bAddTask_Click);
-            // 
-            // lvTasks
-            // 
-            this.lvTasks.BackColor = System.Drawing.Color.Khaki;
-            this.lvTasks.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.lvTasks.Font = new System.Drawing.Font("Arial", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.lvTasks.FullRowSelect = true;
-            this.lvTasks.HideSelection = false;
-            this.lvTasks.Location = new System.Drawing.Point(0, 79);
-            this.lvTasks.MultiSelect = false;
-            this.lvTasks.Name = "lvTasks";
-            this.lvTasks.Size = new System.Drawing.Size(484, 592);
-            this.lvTasks.TabIndex = 3;
-            this.lvTasks.TabStop = false;
-            this.lvTasks.UseCompatibleStateImageBehavior = false;
-            this.lvTasks.ItemChecked += new System.Windows.Forms.ItemCheckedEventHandler(this.lvTasks_ItemChecked);
-            this.lvTasks.MouseClick += new System.Windows.Forms.MouseEventHandler(this.lvTasks_MouseClick);
             // 
             // timer1
             // 
@@ -236,7 +219,7 @@
             // 
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripStatusLabel1});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 57);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 649);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Size = new System.Drawing.Size(484, 22);
             this.statusStrip1.TabIndex = 5;
@@ -277,14 +260,34 @@
             this.toolStripMenuItem3.Text = "Reset";
             this.toolStripMenuItem3.Click += new System.EventHandler(this.ResetTask_ButtonClicked);
             // 
+            // lvTasks
+            // 
+            this.lvTasks.AllowDrop = true;
+            this.lvTasks.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.lvTasks.FullRowSelect = true;
+            this.lvTasks.HideSelection = false;
+            this.lvTasks.Location = new System.Drawing.Point(0, 111);
+            this.lvTasks.Name = "lvTasks";
+            this.lvTasks.Size = new System.Drawing.Size(484, 538);
+            this.lvTasks.TabIndex = 0;
+            this.lvTasks.TabStop = false;
+            this.lvTasks.UseCompatibleStateImageBehavior = false;
+            this.lvTasks.ItemChecked += new System.Windows.Forms.ItemCheckedEventHandler(this.lvTasks_ItemChecked);
+            this.lvTasks.ItemDrag += new System.Windows.Forms.ItemDragEventHandler(this.lvTasks_ItemDrag);
+            this.lvTasks.DragDrop += new System.Windows.Forms.DragEventHandler(this.lvTasks_DragDrop);
+            this.lvTasks.DragEnter += new System.Windows.Forms.DragEventHandler(this.lvTasks_DragEnter);
+            this.lvTasks.DragOver += new System.Windows.Forms.DragEventHandler(this.lvTasks_DragOver);
+            this.lvTasks.DragLeave += new System.EventHandler(this.lvTasks_DragLeave);
+            this.lvTasks.MouseClick += new System.Windows.Forms.MouseEventHandler(this.lvTasks_MouseClick);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(484, 671);
+            this.Controls.Add(this.lvTasks);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.toolStrip1);
-            this.Controls.Add(this.lvTasks);
             this.Controls.Add(this.bAddTask);
             this.Controls.Add(this.tbEstimatedTime);
             this.Controls.Add(this.tbDescription);
@@ -305,7 +308,6 @@
         private System.Windows.Forms.TextBox tbDescription;
         private System.Windows.Forms.TextBox tbEstimatedTime;
         private System.Windows.Forms.Button bAddTask;
-        private System.Windows.Forms.ListView lvTasks;
         private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.ToolStrip toolStrip1;
         private System.Windows.Forms.ToolStripButton toolStripButton1;
@@ -326,6 +328,7 @@
         private System.Windows.Forms.ToolStripButton toolStripButton8;
         private System.Windows.Forms.ToolStripButton toolStripButton9;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
+        private System.Windows.Forms.ListView lvTasks;
     }
 }
 

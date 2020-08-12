@@ -30,6 +30,8 @@ namespace TimedTaskList
             TTlist = new List<TimedTask>();
             fontSize = 16;
 
+
+
             lvTasks.Columns.Add("Description", 295);
             lvTasks.Columns.Add("Est. Time", 100);
             lvTasks.Columns[1].TextAlign = HorizontalAlignment.Right;
@@ -37,6 +39,8 @@ namespace TimedTaskList
             lvTasks.Columns[2].TextAlign = HorizontalAlignment.Right;
             lvTasks.View = View.Details;
             lvTasks.CheckBoxes = true;
+            lvTasks.InsertionMark.Color = Color.Red;
+            lvTasks.AllowDrop = true;
         }
 
         private void StartTimer_ButtonClicked(object sender, EventArgs e)
@@ -283,6 +287,70 @@ namespace TimedTaskList
             {
                 contextMenuStrip1.Show(Cursor.Position);
             }
+        }
+
+        private void lvTasks_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void lvTasks_ItemDrag(object sender, ItemDragEventArgs e)
+        {
+            lvTasks.DoDragDrop(e.Item, DragDropEffects.Move);
+        }
+
+        private void lvTasks_DragEnter(object sender, DragEventArgs e)
+        {
+            e.Effect = e.AllowedEffect;
+        }
+
+        private void lvTasks_DragOver(object sender, DragEventArgs e)
+        {
+            Point targetPoint = lvTasks.PointToClient(new Point(e.X, e.Y));
+            int i = lvTasks.InsertionMark.NearestIndex(targetPoint);
+
+            if(i>-1)
+            {
+                Rectangle itemBounds = lvTasks.GetItemRect(i);
+                if(targetPoint.X>itemBounds.Left+(itemBounds.Width/2))
+                {
+                    lvTasks.InsertionMark.AppearsAfterItem = true;
+                }
+                else 
+                {
+                    lvTasks.InsertionMark.AppearsAfterItem = false;
+                }
+            }
+            lvTasks.InsertionMark.Index = i;
+        }
+
+        private void lvTasks_DragLeave(object sender, EventArgs e)
+        {
+            lvTasks.InsertionMark.Index = -1;
+        }
+
+        private void lvTasks_DragDrop(object sender, DragEventArgs e)
+        {
+            int i = lvTasks.InsertionMark.Index;
+            if (i == -1)
+                return;
+
+            if(lvTasks.InsertionMark.AppearsAfterItem)
+            {
+                i++;
+            }
+            
+
+            ListViewItem draggedItem = (ListViewItem)e.Data.GetData(typeof(ListViewItem));
+            int index = lvTasks.Items.IndexOf(lvTasks.FindItemWithText(draggedItem.SubItems[0].Text));
+            TimedTask temp = TTlist[index];
+            TTlist.Insert(i, temp);
+            if (i <= index)
+                TTlist.RemoveAt(index + 1);
+            else
+                TTlist.RemoveAt(index);
+            lvTasks.Items.Insert(i, (ListViewItem)draggedItem.Clone());
+            lvTasks.Items.Remove(draggedItem);
         }
     }
 }
