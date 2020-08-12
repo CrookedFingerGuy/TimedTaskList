@@ -53,22 +53,29 @@
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripMenuItem();
+            this.panel1 = new System.Windows.Forms.Panel();
             this.lvTasks = new System.Windows.Forms.ListView();
+            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.toolStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.contextMenuStrip1.SuspendLayout();
+            this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
+            this.splitContainer1.Panel1.SuspendLayout();
+            this.splitContainer1.Panel2.SuspendLayout();
+            this.splitContainer1.SuspendLayout();
             this.SuspendLayout();
             // 
             // tbDescription
             // 
-            this.tbDescription.Location = new System.Drawing.Point(12, 28);
+            this.tbDescription.Location = new System.Drawing.Point(12, 8);
             this.tbDescription.Name = "tbDescription";
             this.tbDescription.Size = new System.Drawing.Size(333, 23);
             this.tbDescription.TabIndex = 0;
             // 
             // tbEstimatedTime
             // 
-            this.tbEstimatedTime.Location = new System.Drawing.Point(351, 28);
+            this.tbEstimatedTime.Location = new System.Drawing.Point(351, 8);
             this.tbEstimatedTime.Name = "tbEstimatedTime";
             this.tbEstimatedTime.Size = new System.Drawing.Size(40, 23);
             this.tbEstimatedTime.TabIndex = 1;
@@ -76,7 +83,7 @@
             // 
             // bAddTask
             // 
-            this.bAddTask.Location = new System.Drawing.Point(397, 27);
+            this.bAddTask.Location = new System.Drawing.Point(397, 8);
             this.bAddTask.Name = "bAddTask";
             this.bAddTask.Size = new System.Drawing.Size(75, 23);
             this.bAddTask.TabIndex = 2;
@@ -106,7 +113,7 @@
             this.toolStripButton7});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(484, 25);
+            this.toolStrip1.Size = new System.Drawing.Size(640, 25);
             this.toolStrip1.TabIndex = 4;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -221,7 +228,7 @@
             this.toolStripStatusLabel1});
             this.statusStrip1.Location = new System.Drawing.Point(0, 649);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(484, 22);
+            this.statusStrip1.Size = new System.Drawing.Size(640, 22);
             this.statusStrip1.TabIndex = 5;
             this.statusStrip1.Text = "statusStrip1";
             // 
@@ -260,15 +267,27 @@
             this.toolStripMenuItem3.Text = "Reset";
             this.toolStripMenuItem3.Click += new System.EventHandler(this.ResetTask_ButtonClicked);
             // 
+            // panel1
+            // 
+            this.panel1.Controls.Add(this.tbDescription);
+            this.panel1.Controls.Add(this.tbEstimatedTime);
+            this.panel1.Controls.Add(this.bAddTask);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel1.Location = new System.Drawing.Point(0, 0);
+            this.panel1.MaximumSize = new System.Drawing.Size(0, 40);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(640, 40);
+            this.panel1.TabIndex = 6;
+            // 
             // lvTasks
             // 
             this.lvTasks.AllowDrop = true;
-            this.lvTasks.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.lvTasks.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lvTasks.FullRowSelect = true;
             this.lvTasks.HideSelection = false;
-            this.lvTasks.Location = new System.Drawing.Point(0, 111);
+            this.lvTasks.Location = new System.Drawing.Point(0, 0);
             this.lvTasks.Name = "lvTasks";
-            this.lvTasks.Size = new System.Drawing.Size(484, 538);
+            this.lvTasks.Size = new System.Drawing.Size(640, 580);
             this.lvTasks.TabIndex = 0;
             this.lvTasks.TabStop = false;
             this.lvTasks.UseCompatibleStateImageBehavior = false;
@@ -280,17 +299,36 @@
             this.lvTasks.DragLeave += new System.EventHandler(this.lvTasks_DragLeave);
             this.lvTasks.MouseClick += new System.Windows.Forms.MouseEventHandler(this.lvTasks_MouseClick);
             // 
+            // splitContainer1
+            // 
+            this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer1.IsSplitterFixed = true;
+            this.splitContainer1.Location = new System.Drawing.Point(0, 25);
+            this.splitContainer1.Name = "splitContainer1";
+            this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // splitContainer1.Panel1
+            // 
+            this.splitContainer1.Panel1.Controls.Add(this.panel1);
+            this.splitContainer1.Panel1MinSize = 40;
+            // 
+            // splitContainer1.Panel2
+            // 
+            this.splitContainer1.Panel2.Controls.Add(this.lvTasks);
+            this.splitContainer1.Panel2MinSize = 40;
+            this.splitContainer1.Size = new System.Drawing.Size(640, 624);
+            this.splitContainer1.SplitterDistance = 40;
+            this.splitContainer1.TabIndex = 7;
+            this.splitContainer1.Text = "splitContainer1";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(484, 671);
-            this.Controls.Add(this.lvTasks);
+            this.ClientSize = new System.Drawing.Size(640, 671);
+            this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.toolStrip1);
-            this.Controls.Add(this.bAddTask);
-            this.Controls.Add(this.tbEstimatedTime);
-            this.Controls.Add(this.tbDescription);
             this.Name = "Form1";
             this.Text = "Time Task List";
             this.toolStrip1.ResumeLayout(false);
@@ -298,6 +336,12 @@
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
             this.contextMenuStrip1.ResumeLayout(false);
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
+            this.splitContainer1.Panel1.ResumeLayout(false);
+            this.splitContainer1.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
+            this.splitContainer1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -328,7 +372,9 @@
         private System.Windows.Forms.ToolStripButton toolStripButton8;
         private System.Windows.Forms.ToolStripButton toolStripButton9;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
+        private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.ListView lvTasks;
+        private System.Windows.Forms.SplitContainer splitContainer1;
     }
 }
 
