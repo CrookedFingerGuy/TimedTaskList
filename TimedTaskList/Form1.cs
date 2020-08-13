@@ -22,6 +22,7 @@ namespace TimedTaskList
         string timeFormattingEstimated;
         string timeFormattingActual;
         string timeFormattingStatus;
+        string fontName;
 
         public Form1()
         {
@@ -35,7 +36,7 @@ namespace TimedTaskList
             timeFormattingEstimated = "{0:##}"; //"{0:#0}:{1:00}";
             timeFormattingActual = "{0:#0}:{1:00}";
             timeFormattingStatus = "{0:#0}:{1:00}";
-
+            fontName = "Tahoma";
 
             lvTasks.Columns.Add("Description", 295);
             lvTasks.Columns.Add("Est. Time", 100);
@@ -46,6 +47,7 @@ namespace TimedTaskList
             lvTasks.CheckBoxes = true;
             lvTasks.InsertionMark.Color = Color.Red;
             lvTasks.AllowDrop = true;
+            lvTasks.Font = new Font(fontName, fontSize);
         }
 
         private void StartTimer_ButtonClicked(object sender, EventArgs e)
@@ -147,39 +149,53 @@ namespace TimedTaskList
             OpenFileDialog lDialog = new OpenFileDialog();
             if (lDialog.ShowDialog() == DialogResult.OK)
             {
-                TTlist.Clear();
-                lvTasks.Items.Clear();
-                TTlist = FileUtils.ReadFromXmlFile<List<TimedTask>>(lDialog.FileName);
-
-                for (int i = 0; i < TTlist.Count; i++)
-                {
-                    lvTasks.Items.Add(new ListViewItem(
-                        new string[] { TTlist[i].description,
-                            String.Format(timeFormattingEstimated, TTlist[i].estimatedTime.Minutes,TTlist[i].estimatedTime.Seconds),
-                            String.Format(timeFormattingActual,TTlist[i].actualTime.Minutes,TTlist[i].actualTime.Seconds)}));
-                    lvTasks.Items[i].Checked = TTlist[i].isChecked;
-                }
-                HandleListVewStrikout();
-                statusStrip1.Items[0].Text = "Total Estimated Time: " + CalculateTotalEstimatedTime();
+                LoadFromFile(lDialog.FileName);
             }
         }
 
+        public void LoadFromFile(string fn)
+        {
+            TTlist.Clear();
+            lvTasks.Items.Clear();
+            TTlist = FileUtils.ReadFromXmlFile<List<TimedTask>>(fn);
+
+            for (int i = 0; i < TTlist.Count; i++)
+            {
+                lvTasks.Items.Add(new ListViewItem(
+                    new string[] { TTlist[i].description,
+                            String.Format(timeFormattingEstimated, TTlist[i].estimatedTime.Minutes,TTlist[i].estimatedTime.Seconds),
+                            String.Format(timeFormattingActual,TTlist[i].actualTime.Minutes,TTlist[i].actualTime.Seconds)}));
+                lvTasks.Items[i].Checked = TTlist[i].isChecked;
+            }
+            HandleListVewStrikout();
+            statusStrip1.Items[0].Text = "Total Estimated Time: " + CalculateTotalEstimatedTime();
+        }
+
+        public void FontChange_ButtonClicked(object sender,EventArgs e)
+        {
+            FontDialog fDialog = new FontDialog();
+            if(fDialog.ShowDialog()==DialogResult.OK)
+            {
+                fontName = fDialog.Font.Name;
+                HandleListVewStrikout();
+            }
+        }
         public void FontIncrease_ButtonClicked(object sender, EventArgs e)
         {
             fontSize += 2;
-            lvTasks.Font = new Font("Arial", fontSize);
+            lvTasks.Font = new Font(fontName, fontSize);
             foreach (ListViewItem item in lvTasks.Items)
             {
                 if (item.Checked == true)
                 {
-                    item.SubItems[0].Font = new Font("Arial", fontSize, FontStyle.Strikeout);
+                    item.SubItems[0].Font = new Font(fontName, fontSize, FontStyle.Strikeout);
                 }
                 else
                 {
-                    item.SubItems[0].Font = new Font("Arial", fontSize);
+                    item.SubItems[0].Font = new Font(fontName, fontSize);
                 }
-                item.SubItems[1].Font = new Font("Arial", fontSize);
-                item.SubItems[2].Font = new Font("Arial", fontSize);
+                item.SubItems[1].Font = new Font(fontName, fontSize);
+                item.SubItems[2].Font = new Font(fontName, fontSize);
             }
         }
 
@@ -188,19 +204,19 @@ namespace TimedTaskList
             if (fontSize > 10)
             {
                 fontSize -= 2;
-                lvTasks.Font = new Font("Arial", fontSize);
+                lvTasks.Font = new Font(fontName, fontSize);
                 foreach (ListViewItem item in lvTasks.Items)
                 {
                     if (item.Checked == true)
                     {
-                        item.SubItems[0].Font = new Font("Arial", fontSize, FontStyle.Strikeout);
+                        item.SubItems[0].Font = new Font(fontName, fontSize, FontStyle.Strikeout);
                     }
                     else
                     {
-                        item.SubItems[0].Font = new Font("Arial", fontSize);
+                        item.SubItems[0].Font = new Font(fontName, fontSize);
                     }
-                    item.SubItems[1].Font = new Font("Arial", fontSize);
-                    item.SubItems[2].Font = new Font("Arial", fontSize);
+                    item.SubItems[1].Font = new Font(fontName, fontSize);
+                    item.SubItems[2].Font = new Font(fontName, fontSize);
                 }
             }
         }
@@ -219,15 +235,15 @@ namespace TimedTaskList
 
                 if (lvTasks.Items[i].Checked)
                 {
-                    lvTasks.Items[i].SubItems[0].Font = new Font("Arial", fontSize, FontStyle.Strikeout);
+                    lvTasks.Items[i].SubItems[0].Font = new Font(fontName, fontSize, FontStyle.Strikeout);
                 }
                 else
                 {
-                    lvTasks.Items[i].SubItems[0].Font = new Font("Arial", fontSize);
+                    lvTasks.Items[i].SubItems[0].Font = new Font(fontName, fontSize);
                 }
 
-                lvTasks.Items[i].SubItems[1].Font = new Font("Arial", fontSize);
-                lvTasks.Items[i].SubItems[2].Font = new Font("Arial", fontSize);
+                lvTasks.Items[i].SubItems[1].Font = new Font(fontName, fontSize);
+                lvTasks.Items[i].SubItems[2].Font = new Font(fontName, fontSize);
             }
         }
 
@@ -264,22 +280,25 @@ namespace TimedTaskList
             if (e.Item.Checked==true)
             {
                 e.Item.UseItemStyleForSubItems = false;
-                TTlist[i].actualTime = currentTime;
                 TTlist[i].isChecked = true;
                 lvTasks.Items[i].SubItems[2].Text = String.Format(timeFormattingActual, TTlist[i].actualTime.Minutes, TTlist[i].actualTime.Seconds);
                 currentTime = new TimeSpan(0, 0, 0);
             }
             else
             {
+                //currentI is the index of the task that was accruing time before index i was unchecked
+                int currentI = 0;
+                while ((currentI < lvTasks.Items.Count - 1 && lvTasks.Items[currentI].Checked == true) || currentI==i)
+                {
+                    currentI++;
+                }
+                TTlist[currentI].actualTime = new TimeSpan(0, 0, 0);
+                lvTasks.Items[currentI].SubItems[2].Text = String.Format(timeFormattingActual, TTlist[currentI].actualTime.Minutes, TTlist[currentI].actualTime.Seconds);
+
                 e.Item.UseItemStyleForSubItems = false;
                 TTlist[i].actualTime=TTlist[i].actualTime.Add(currentTime);
                 TTlist[i].isChecked = false;
                 lvTasks.Items[i].SubItems[2].Text = String.Format(timeFormattingActual, TTlist[i].actualTime.Minutes, TTlist[i].actualTime.Seconds);
-                if(i<lvTasks.Items.Count-1)
-                {
-                    TTlist[i + 1].actualTime = new TimeSpan(0, 0, 0);
-                    lvTasks.Items[i + 1].SubItems[2].Text = String.Format(timeFormattingActual, TTlist[i+1].actualTime.Minutes, TTlist[i+1].actualTime.Seconds);
-                }
                 currentTime = TTlist[i].actualTime;
             }
             HandleListVewStrikout();
@@ -359,6 +378,12 @@ namespace TimedTaskList
 
         private void lvTasks_DragDrop(object sender, DragEventArgs e)
         {
+            if(e.Data.GetDataPresent(DataFormats.FileDrop))
+            {
+                string[] fileNames = (string[])e.Data.GetData(DataFormats.FileDrop);
+                LoadFromFile(fileNames[0]);
+            }
+
             int i = lvTasks.InsertionMark.Index;
             if (i == -1)
                 return;
@@ -366,8 +391,7 @@ namespace TimedTaskList
             if(lvTasks.InsertionMark.AppearsAfterItem)
             {
                 i++;
-            }
-            
+            }            
 
             ListViewItem draggedItem = (ListViewItem)e.Data.GetData(typeof(ListViewItem));
             int index = lvTasks.Items.IndexOf(lvTasks.FindItemWithText(draggedItem.SubItems[0].Text));
