@@ -177,6 +177,8 @@ namespace TimedTaskList
             if(fDialog.ShowDialog()==DialogResult.OK)
             {
                 fontName = fDialog.Font.Name;
+                fontSize = (int)fDialog.Font.Size;
+                lvTasks.Font = new Font(fontName, fontSize);
                 HandleListVewStrikout();
             }
         }

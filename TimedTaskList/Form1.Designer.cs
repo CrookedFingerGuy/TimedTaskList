@@ -197,6 +197,7 @@
             this.toolStripButton10.Name = "toolStripButton10";
             this.toolStripButton10.Size = new System.Drawing.Size(23, 22);
             this.toolStripButton10.Text = "Change Font";
+            this.toolStripButton10.Click += new System.EventHandler(this.FontChange_ButtonClicked);
             // 
             // toolStripButton8
             // 
